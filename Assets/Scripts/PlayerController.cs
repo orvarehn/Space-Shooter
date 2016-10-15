@@ -11,15 +11,27 @@ public class Boundary
 public class PlayerController : MonoBehaviour {
 
 	private Rigidbody rigidBody;
-	//private Camera camera;
 	public float speed;
 	public Boundary boundary;
 	public float tiltFactor;
+	public GameObject boltPrefab;
+	public Transform shotSpawn;
+	public float fireRate;
+	private float nextFire;
+
 
 	void Start() 
 	{
 		rigidBody = GetComponent<Rigidbody>();
-		//camera = GetComponent<Camera>();
+	}
+
+	void Update() 
+	{
+		if (Input.GetKeyDown("space") || Input.GetButton("Fire1")  && Time.time > nextFire) 
+		{
+			GameObject clone = Instantiate (boltPrefab, shotSpawn.position, shotSpawn.rotation) as GameObject;
+			nextFire = Time.time + fireRate;
+		}
 	}
 
 	void FixedUpdate()
@@ -27,27 +39,12 @@ public class PlayerController : MonoBehaviour {
 		float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
 		Vector3 movementVector = new Vector3 (moveHorizontal, 0.0f, moveVertical);
-		//rigidBody.AddForce (movementVector * speed);
 		rigidBody.velocity = movementVector * speed;
-
 		rigidBody.position = new Vector3 (
 			Mathf.Clamp (rigidBody.position.x, boundary.xMin, boundary.xMax),
 			0.0f,
 			Mathf.Clamp (rigidBody.position.z, boundary.zMin, boundary.zMax)
 		);
 		rigidBody.rotation = Quaternion.Euler (0.0f, 0.0f, rigidBody.velocity.x * -tiltFactor);
-	
 	}
-//	void clampPosToPlayArea()
-//	{
-//		Vector3 screenPos = camera.WorldToScreenPoint (rigidBody.position);
-//		float screenHeight = UnityEngine.Screen.height;
-//		float screenWidth = UnityEngine.Screen.width;
-//		Vector3 clampedScreenPos = new Vector3 (
-//			                           Mathf.Clamp (screenPos.x, 0.0f, screenWidth),
-//			                           0.0f,
-//			                           Mathf.Clamp (screenPos.z, 0.0f, 0.8f * screenHeight)
-//		                           );
-//		
-//	}
 }
