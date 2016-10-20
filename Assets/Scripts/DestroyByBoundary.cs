@@ -6,6 +6,5 @@ public class DestroyByBoundary : MonoBehaviour
 	void OnTriggerExit(Collider other) {
 		// Destroy everything that leaves the trigger
 		Destroy(other.gameObject);
-		print (other.gameObject.transform.position.x);
 	}
 }
