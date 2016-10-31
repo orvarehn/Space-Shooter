@@ -18,11 +18,13 @@ public class PlayerController : MonoBehaviour {
 	public Transform shotSpawn;
 	public float fireRate;
 	private float nextFire;
+	private AudioSource audioSource;
 
 
 	void Start() 
 	{
 		rigidBody = GetComponent<Rigidbody>();
+		audioSource = GetComponent<AudioSource> ();
 	}
 
 	void Update() 
@@ -31,6 +33,7 @@ public class PlayerController : MonoBehaviour {
 		{
 			GameObject clone = Instantiate (boltPrefab, shotSpawn.position, shotSpawn.rotation) as GameObject;
 			nextFire = Time.time + fireRate;
+			audioSource.Play ();
 		}
 	}
 
